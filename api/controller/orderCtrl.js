@@ -64,7 +64,7 @@ const orderCtrl = {
         }
     },
 
-    //Get monthly income
+    //Get số lượng sản phẩm của tháng đó
     getMonthlyIncome: async(req, res) => {
         const date = new Date();
         const lastMonth = new Date(date.setMonth(date.getMonth() - 1));

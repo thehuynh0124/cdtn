@@ -15,6 +15,7 @@ const Products_Apple = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
+  // hiển thị danh mục sản phẩm theo category laptop
   useEffect(() => {
     const getProducts = async () => {
       try {

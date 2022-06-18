@@ -6,7 +6,7 @@ const {
 } = require("../middleware/verifyToken")
 
 const userCrtl = {
-    //UPDATE
+    //Create and UPDATE
     updateUser: async(req, res) => {
         if (req.body.password) {
             req.body.password = CryptoJS.AES.encrypt(

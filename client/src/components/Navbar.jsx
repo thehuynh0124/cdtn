@@ -87,8 +87,7 @@ const Item = styled.div`
 const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
   console.log(quantity);
-  //const {logoutUser} = useContext(AuthContext)
-
+  //logout
   const logout = () => logoutUser()
   return (
     <Container>
@@ -141,7 +140,7 @@ const Navbar = () => {
             </MenuItem>
           </Link>
           <Button onClick={logout} >
-              <Link to="/login" style={{ color: "black" }}>OUT</Link>
+              <Link to="/login" style={{ color: "black", textDecoration: "auto" }}>OUT</Link>
           </Button>
         </Right>
       </Wrapper>

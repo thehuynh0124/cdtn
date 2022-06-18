@@ -15,6 +15,7 @@ const Products = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
+  // hiên thị theo danh mục sản phẩm mà theo thứ tự
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -57,11 +58,12 @@ const Products = ({ cat, filters, sort }) => {
   }, [sort]);
 
   return (
+    // 12 là số lượng sản phẩm muốn có trong giao diện
     <Container>
       {cat
         ? filteredProducts.map((item) => <Product item={item} key={item.id} />)
         : products
-            .slice(0, 8)
+            .slice(0, 12)
             .map((item) => <Product item={item} key={item.id} />)}
     </Container>
   );

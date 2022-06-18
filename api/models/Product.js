@@ -3,25 +3,29 @@ const mongoose = require("mongoose");
 const ProductSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
-        unique: true
     },
     desc: {
         type: String,
-        required: true,
     },
     img: {
         type: String,
-        required: true
+    },
+    price: {
+        type: String,
+    },
+    // số lượng sản phẩm
+    amount: {
+        type: Number
+    },
+    categories: {
+        type: Array
     },
     imgProduct: {
         type: String,
     },
+    // cấu hình 
     khung: {
         type: String,
-    },
-    categories: {
-        type: Array
     },
     memory: {
         type: String
@@ -41,30 +45,30 @@ const ProductSchema = new mongoose.Schema({
     cauhinh: {
         type: String
     },
-
     color: {
-        type: String
+        type: Array
     },
+    // giảm giá
     sale: {
         type: String
     },
     sale1: {
         type: String
     },
-    price: {
-        type: String,
-        required: true
-    },
+    // giá fake
     pricefake: {
         type: String
     },
+    // giá gốc 
     pricesale: {
         type: String,
     },
-    imgIcon: {
+    // tỉ lệ trả góp
+    titletragop: {
         type: String,
     },
-    titletragop: {
+    // icon thanh toán 
+    imgIcon: {
         type: String,
     },
     imgIcon1: {
