@@ -216,7 +216,7 @@ const Cart = () => {
                   <Image src={product.img} />
                   <Details>
                     <ProductName>
-                      <b>Product:</b> {product.title}
+                      <b>Tên sản phẩm:</b> {product.title}
                     </ProductName>
                     <ProductId>
                       <b>ID:</b> {product._id}
@@ -235,12 +235,10 @@ const Cart = () => {
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Remove onClick={() => handleQuantity("dec")} />
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Add onClick={() => handleQuantity("inc")} />
                   </ProductAmountContainer>
                   <ProductPrice>
-                    $ {product.price * product.quantity}
+                    {product.price * product.quantity} VNĐ
                   </ProductPrice>
                 </PriceDetail>
               </Product>
@@ -251,23 +249,22 @@ const Cart = () => {
             <SummaryTitle>ORDER</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Số tiền sản phẩm</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>{cart.total} VNĐ</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Phí vận chuyển</SummaryItemText>
-              <SummaryItemPrice>50.900</SummaryItemPrice>
+              <SummaryItemPrice>50.900 VNĐ</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Giảm giá</SummaryItemText>
-              <SummaryItemPrice>-50.900</SummaryItemPrice>
+              <SummaryItemPrice>-50.900 VNĐ</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Tổng tiền</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>{cart.total} VNĐ</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
               name="SmartP"
-              // image="https://avatars.githubusercontent.com/u/1486366?v=4"
               billingAddress
               shippingAddress
               description={`Tổng tiền của bạn: ${cart.total} VNĐ`}

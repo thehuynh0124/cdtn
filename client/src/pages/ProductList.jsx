@@ -90,7 +90,7 @@ const ProductList = () => {
             <Option>64</Option>
           </Select>
           <FilterText>Kích thước:</FilterText>
-          <Select name="kichthuc" onChange={handleFilters}>
+          <Select name="kichthuoc" onChange={handleFilters}>
             <Option disabled>kichthuoc</Option>
             <Option>5.8</Option>
             <Option>6.1</Option>
