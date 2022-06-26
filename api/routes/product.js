@@ -11,7 +11,7 @@ const router = require("express").Router();
 router.post("/", verifyTokenAndAdmin, productCtrl.createProduct)
 
 //UPDATE
-router.put("/:id", verifyTokenAndAdmin, productCtrl.updateProduct)
+router.put("/:id", /*verifyTokenAndAdmin,*/ productCtrl.updateProduct)
 
 //DELETE
 router.delete("/:id", verifyTokenAndAdmin, productCtrl.deleteProduct)

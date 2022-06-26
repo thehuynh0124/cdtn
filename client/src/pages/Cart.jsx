@@ -1,4 +1,4 @@
-import { Add, Remove } from "@material-ui/icons";
+// import { Add, Remove } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Bang from "../components/Bang";
@@ -10,6 +10,9 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useNavigate  } from "react-router";
 import { Link } from "react-router-dom";
+// import { product } from "../redux/apiCalls";
+
+const KEY = "pk_test_51LCNWkBP1LwCA3styoj0vz1MpPtdDsiNixixSrRdD99Ze69uLPFw6l8OWDvpkfvWPuZyyk8ZtxyXFv1WVrvF4ODt006EhGHFjw";
 
 const Container = styled.div``;
 
@@ -165,20 +168,29 @@ const Button = styled.button`
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const [stripeToken, setStripeToken] = useState(null);
-  const [quantity, setQuantity] = useState(1);
+  // const [quantity, setQuantity] = useState(1);
   const history = useNavigate();
 
   const onToken = (token) => {
     setStripeToken(token);
   };
 
-  const handleQuantity = (type) => {
-    if (type === "dec") {
-      quantity > 1 && setQuantity(quantity - 1);
-    } else {
-      setQuantity(quantity + 1);
-    }
-  };
+  // const handleQuantity = (type) => {
+  //   if (type === "dec") {
+  //     quantity > 1 && setQuantity(quantity - 1);
+  //   } else {
+  //     setQuantity(quantity + 1);
+  //   }
+  // };
+
+  // trừ đi số lượng sản phẩm
+  // const [amount, setAmount] = useState("")
+  // const dispatch = useDispatch()
+  // const handleClick = async (e) =>{
+  //   e.preventDefault();
+  //   product(dispatch, {amount})
+  // }
+
 
   useEffect(() => {
     const makeRequest = async () => {
@@ -194,6 +206,8 @@ const Cart = () => {
     };
     stripeToken && makeRequest();
   }, [stripeToken, cart.total, history]);
+
+
   return (
     <Container>
       <Navbar />
@@ -270,10 +284,9 @@ const Cart = () => {
               description={`Tổng tiền của bạn: ${cart.total} VNĐ`}
               amount={cart.total}
               token={onToken}
-              // thay doi strip để dùng
-              stripeKey='pk_test_51Kz1UzAxCpOAdfMsbxmgJ1sZ9gE4PLSJoJ5OgK3jsGwkaWUFGRIK3e9rx9J1OhBHRf5F3dPeMvlWNF4rV73igBUS00oO13xjFY'
+              stripeKey= {KEY}
             >
-              <Button>Thanh toán luôn</Button>
+              <Button /*onClick={handleClick}*/>Thanh toán luôn</Button>
             </StripeCheckout>
           </Summary>
         </Bottom>
