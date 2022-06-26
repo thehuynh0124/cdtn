@@ -8,11 +8,12 @@ import { mobile } from "../responsive";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
-import { useNavigate  } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 // import { product } from "../redux/apiCalls";
 
-const KEY = "pk_test_51LCNWkBP1LwCA3styoj0vz1MpPtdDsiNixixSrRdD99Ze69uLPFw6l8OWDvpkfvWPuZyyk8ZtxyXFv1WVrvF4ODt006EhGHFjw";
+const KEY =
+  "pk_test_51LCNWkBP1LwCA3styoj0vz1MpPtdDsiNixixSrRdD99Ze69uLPFw6l8OWDvpkfvWPuZyyk8ZtxyXFv1WVrvF4ODt006EhGHFjw";
 
 const Container = styled.div``;
 
@@ -166,15 +167,6 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
-  const cart = useSelector((state) => state.cart);
-  const [stripeToken, setStripeToken] = useState(null);
-  // const [quantity, setQuantity] = useState(1);
-  const history = useNavigate();
-
-  const onToken = (token) => {
-    setStripeToken(token);
-  };
-
   // const handleQuantity = (type) => {
   //   if (type === "dec") {
   //     quantity > 1 && setQuantity(quantity - 1);
@@ -191,22 +183,29 @@ const Cart = () => {
   //   product(dispatch, {amount})
   // }
 
+  const cart = useSelector((state) => state.cart);
+  const [stripeToken, setStripeToken] = useState(null);
+  // const [quantity, setQuantity] = useState(1);
+  let navigate = useNavigate();
+
+  const onToken = (token) => {
+    setStripeToken(token);
+  };
 
   useEffect(() => {
     const makeRequest = async () => {
       try {
         const res = await userRequest.post("/checkout/payment", {
           tokenId: stripeToken.id,
-          amount: 500,
+          amount: cart.total,
         });
-        history.push("/success", {
-          stripeData: res.data,
-          products: cart, });
+        navigate("/success", {
+          state: { stripeData: res.data, products: cart },
+        });
       } catch {}
     };
     stripeToken && makeRequest();
-  }, [stripeToken, cart.total, history]);
-
+  }, [stripeToken, cart.total, navigate]);
 
   return (
     <Container>
@@ -215,7 +214,11 @@ const Cart = () => {
       <Wrapper>
         <Title>Giỏ hàng</Title>
         <Top>
-          <TopButton><Link to="/" style={{ color: "black", textDecoration: "auto" }}>TIẾP TỤC SHOPPING</Link></TopButton>
+          <TopButton>
+            <Link to="/" style={{ color: "black", textDecoration: "auto" }}>
+              TIẾP TỤC SHOPPING
+            </Link>
+          </TopButton>
           <TopTexts>
             <TopText>Giỏ hàng(2)</TopText>
             <TopText>Sản phẩm mới(3)</TopText>
@@ -284,7 +287,7 @@ const Cart = () => {
               description={`Tổng tiền của bạn: ${cart.total} VNĐ`}
               amount={cart.total}
               token={onToken}
-              stripeKey= {KEY}
+              stripeKey={KEY}
             >
               <Button /*onClick={handleClick}*/>Thanh toán luôn</Button>
             </StripeCheckout>
