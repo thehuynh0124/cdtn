@@ -28,7 +28,7 @@ const ProductSchema = new mongoose.Schema({
         type: String,
     },
     memory: {
-        type: String
+        type: Array
     },
     chip: {
         type: String

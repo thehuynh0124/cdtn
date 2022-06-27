@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import React, {useState} from 'react'
-import {useDispatch, useSelector} from "react-redux"
-import {Link} from 'react-router-dom'
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { register } from "../redux/apiCalls";
-import axios from 'axios'
 
 const Container = styled.div`
   width: 100vw;
@@ -56,39 +54,56 @@ const Button = styled.button`
 `;
 
 const Register = () => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [email, setEmail] = useState("")
-  const dispatch = useDispatch()
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
   //const { isFetching, error } = useSelector((state) => state.user)
-  
-  const handleClick = async (e) =>{
+
+  const handleClick = async (e) => {
     e.preventDefault();
-    register(dispatch, {username,email, password})
-  }
+    register(dispatch, { username, email, password });
+  };
 
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        <Form >
-          <Input type="text" name="username" required
-           placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-          
-          <Input type="email" name="email" required
-           placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-          
-          <Input type="password" name="password" required
-           placeholder="password" onChange={(e) => setPassword(e.target.value)}/>
-          
+        <Form>
+          <Input
+            type="text"
+            name="username"
+            required
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <Input
+            type="email"
+            name="email"
+            required
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <Input
+            type="password"
+            name="password"
+            required
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
           <Input type="password" placeholder="confirm password" />
-          
+
           <Agreement>
             By clicking Sign Up, you agree to our Terms, Data Policy and Cookie
             Policy. You may receive SMS notifications from us and can opt out at
             any time.
           </Agreement>
-          <Button type="submit" onClick={handleClick}>Register</Button>
+          <Button type="submit" onClick={handleClick}>
+            Register
+          </Button>
         </Form>
       </Wrapper>
     </Container>

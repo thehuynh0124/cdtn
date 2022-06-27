@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { login } from "../redux/apiCalls";
-import {useDispatch, useSelector} from "react-redux"
-import { mobile } from "../responsive";
-
+import { useDispatch, useSelector } from "react-redux";
 
 const Container = styled.div`
   width: 100vw;
@@ -83,7 +81,7 @@ const ButtonLogin = styled.button`
   align-items: center;
   font-size: 18px;
   border-radius: 6px;
-  &:disabled{
+  &:disabled {
     color: green;
     cursor: not-allowed;
   }
@@ -116,16 +114,15 @@ const Error = styled.span`
 `;
 
 const Login = () => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const dispatch = useDispatch()
-  const { isFetching, error } = useSelector((state) => state.user)
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const { isFetching, error } = useSelector((state) => state.user);
 
-
-  const handleClick = async (e) =>{
+  const handleClick = async (e) => {
     e.preventDefault();
-    login(dispatch, {username, password})
-  }
+    login(dispatch, { username, password });
+  };
   return (
     <Container>
       <Logo>SmartP</Logo>
@@ -135,11 +132,11 @@ const Login = () => {
       <Wrapper>
         <Title>SIGN IN</Title>
         <Form>
-          <Input 
-            placeholder="Username or phone number" 
+          <Input
+            placeholder="Username or phone number"
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Input 
+          <Input
             placeholder="Password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -147,7 +144,7 @@ const Login = () => {
           <ButtonLogin onClick={handleClick} disabled={isFetching}>
             LOGIN
           </ButtonLogin>
-            {error && <Error >Something went wrong...</Error>}
+          {error && <Error>Something went wrong...</Error>}
           <Link style={{ textDecoration: "auto" }}>Forgotten password?</Link>
           <ButtonRegister>Create new Account</ButtonRegister>
         </Form>

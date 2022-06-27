@@ -1,4 +1,4 @@
-import { Add, Remove } from "@material-ui/icons";
+// import { Add, Remove } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Bang from "../components/Bang";
@@ -8,8 +8,12 @@ import { mobile } from "../responsive";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
-import { useNavigate  } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+// import { product } from "../redux/apiCalls";
+
+const KEY =
+  "pk_test_51LCNWkBP1LwCA3styoj0vz1MpPtdDsiNixixSrRdD99Ze69uLPFw6l8OWDvpkfvWPuZyyk8ZtxyXFv1WVrvF4ODt006EhGHFjw";
 
 const Container = styled.div``;
 
@@ -163,21 +167,29 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  // const handleQuantity = (type) => {
+  //   if (type === "dec") {
+  //     quantity > 1 && setQuantity(quantity - 1);
+  //   } else {
+  //     setQuantity(quantity + 1);
+  //   }
+  // };
+
+  // trừ đi số lượng sản phẩm
+  // const [amount, setAmount] = useState("")
+  // const dispatch = useDispatch()
+  // const handleClick = async (e) =>{
+  //   e.preventDefault();
+  //   product(dispatch, {amount})
+  // }
+
   const cart = useSelector((state) => state.cart);
   const [stripeToken, setStripeToken] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const history = useNavigate();
+  // const [quantity, setQuantity] = useState(1);
+  let navigate = useNavigate();
 
   const onToken = (token) => {
     setStripeToken(token);
-  };
-
-  const handleQuantity = (type) => {
-    if (type === "dec") {
-      quantity > 1 && setQuantity(quantity - 1);
-    } else {
-      setQuantity(quantity + 1);
-    }
   };
 
   useEffect(() => {
@@ -185,15 +197,16 @@ const Cart = () => {
       try {
         const res = await userRequest.post("/checkout/payment", {
           tokenId: stripeToken.id,
-          amount: 500,
+          amount: cart.total,
         });
-        history.push("/success", {
-          stripeData: res.data,
-          products: cart, });
+        navigate("/success", {
+          state: { stripeData: res.data, products: cart },
+        });
       } catch {}
     };
     stripeToken && makeRequest();
-  }, [stripeToken, cart.total, history]);
+  }, [stripeToken, cart.total, navigate]);
+
   return (
     <Container>
       <Navbar />
@@ -201,7 +214,11 @@ const Cart = () => {
       <Wrapper>
         <Title>Giỏ hàng</Title>
         <Top>
-          <TopButton><Link to="/" style={{ color: "black", textDecoration: "auto" }}>TIẾP TỤC SHOPPING</Link></TopButton>
+          <TopButton>
+            <Link to="/" style={{ color: "black", textDecoration: "auto" }}>
+              TIẾP TỤC SHOPPING
+            </Link>
+          </TopButton>
           <TopTexts>
             <TopText>Giỏ hàng(2)</TopText>
             <TopText>Sản phẩm mới(3)</TopText>
@@ -216,7 +233,7 @@ const Cart = () => {
                   <Image src={product.img} />
                   <Details>
                     <ProductName>
-                      <b>Product:</b> {product.title}
+                      <b>Tên sản phẩm:</b> {product.title}
                     </ProductName>
                     <ProductId>
                       <b>ID:</b> {product._id}
@@ -235,12 +252,10 @@ const Cart = () => {
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Remove onClick={() => handleQuantity("dec")} />
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Add onClick={() => handleQuantity("inc")} />
                   </ProductAmountContainer>
                   <ProductPrice>
-                    $ {product.price * product.quantity}
+                    {product.price * product.quantity} VNĐ
                   </ProductPrice>
                 </PriceDetail>
               </Product>
@@ -251,32 +266,30 @@ const Cart = () => {
             <SummaryTitle>ORDER</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Số tiền sản phẩm</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>{cart.total} VNĐ</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Phí vận chuyển</SummaryItemText>
-              <SummaryItemPrice>50.900</SummaryItemPrice>
+              <SummaryItemPrice>50.900 VNĐ</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Giảm giá</SummaryItemText>
-              <SummaryItemPrice>-50.900</SummaryItemPrice>
+              <SummaryItemPrice>-50.900 VNĐ</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Tổng tiền</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>{cart.total} VNĐ</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
               name="SmartP"
-              // image="https://avatars.githubusercontent.com/u/1486366?v=4"
               billingAddress
               shippingAddress
               description={`Tổng tiền của bạn: ${cart.total} VNĐ`}
               amount={cart.total}
               token={onToken}
-              // thay doi strip để dùng
-              stripeKey='pk_test_51Kz1UzAxCpOAdfMsbxmgJ1sZ9gE4PLSJoJ5OgK3jsGwkaWUFGRIK3e9rx9J1OhBHRf5F3dPeMvlWNF4rV73igBUS00oO13xjFY'
+              stripeKey={KEY}
             >
-              <Button>Thanh toán luôn</Button>
+              <Button /*onClick={handleClick}*/>Thanh toán luôn</Button>
             </StripeCheckout>
           </Summary>
         </Bottom>

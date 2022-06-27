@@ -8,7 +8,7 @@ const {
 const router = require("express").Router();
 
 //CREATE
-router.post("/", verifyToken, orderCtrl.createOrder)
+router.post("/",/* verifyToken,*/ orderCtrl.createOrder)
 
 //UPDATE
 router.put("/:id", verifyTokenAndAdmin, orderCtrl.updeteOrder)

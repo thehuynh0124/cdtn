@@ -16,6 +16,7 @@ const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
+  height: 550px;
   ${mobile({ padding: "10px", flexDirection: "column" })}
 `;
 
@@ -123,10 +124,10 @@ const Button = styled.button`
 const Product = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState({});
-  const [color] = useState("");
-  const [size] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("");
+  const [memory, setMemory] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -148,7 +149,7 @@ const Product = () => {
   };
 
   const handleClick = () => {
-    dispatch(addProduct({ ...product, quantity, color, size }));
+    dispatch(addProduct({ ...product, quantity, color, memory }));
   };
 
   return (
@@ -157,27 +158,25 @@ const Product = () => {
       <Bang />
       <Wrapper>
         <ImgContainer>
-          <Image src={product.imgProduct} />
+          <Image src={product.img} />
         </ImgContainer>
         <InfoContainer>
           <Title>{product.title}</Title>
           <Desc>{product.desc}</Desc>
-          <Price>{product.price}</Price>
+          <Price>{product.pricefake}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
+              {product.color?.map((c) => (
+                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
+              ))}
             </Filter>
             <Filter>
-              <FilterTitle>Memery</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>64</FilterSizeOption>
-                <FilterSizeOption>128</FilterSizeOption>
-                <FilterSizeOption>256</FilterSizeOption>
-                <FilterSizeOption>512</FilterSizeOption>
-                <FilterSizeOption>1T</FilterSizeOption>
+              <FilterTitle>Memory</FilterTitle>
+              <FilterSize onChange={(e) => setMemory(e.target.value)}>
+                {product.memory?.map((s) => (
+                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                ))}
               </FilterSize>
             </Filter>
           </FilterContainer>

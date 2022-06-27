@@ -4,12 +4,15 @@ import {
   ShoppingCartOutlined,
   NotificationsNoneTwoTone,
 } from "@material-ui/icons";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../redux/apiCalls";
+import Table from "./TableSearch";
 
 const Container = styled.div`
   height: 50px;
@@ -17,7 +20,11 @@ const Container = styled.div`
   color: black;
   ${mobile({ height: "50px" })}
 `;
-
+const ContainerTable = styled.div`
+  height: 150px;
+  width: 250px;
+  margin: 40px 0px 0px 145px;
+`;
 const Wrapper = styled.div`
   padding: 0px 100px;
   display: flex;
@@ -88,15 +95,33 @@ const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
   console.log(quantity);
   //logout
-  const logout = () => logoutUser()
+  const logout = () => logoutUser();
+
+  // search // vẫn hiện khi không tìm kiếm
+  const [query, setQuery] = useState("search");
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        `http://localhost:5000/api/products?category=${query}`
+      );
+      setData(res.data);
+    };
+    fetchData();
+  }, [query]);
   return (
     <Container>
       <Wrapper>
         <Left>
           <Language>VN</Language>
           <SearchContainer>
-            <Input style={{ fontSize: 18 }} placeholder="Tìm kiếm" />
-            <Search style={{ color: "black", fontSize: 20 }} />
+            <Input
+              style={{ fontSize: 18 }}
+              className="search"
+              placeholder="Search..."
+              onChange={(e) => setQuery(e.target.value.toLowerCase())}
+            />
+            {/* <Search style={{ color: "black", fontSize: 20 }} /> */}
           </SearchContainer>
         </Left>
         <Center>
@@ -132,18 +157,23 @@ const Navbar = () => {
             </Link>
           </MenuItem>
           <Link to="/cart" style={{ color: "black" }}>
-          
             <MenuItem>
               <Badge badgeContent={quantity} color="primary">
                 <ShoppingCartOutlined />
               </Badge>
             </MenuItem>
           </Link>
-          <Button onClick={logout} >
-              <Link to="/login" style={{ color: "black", textDecoration: "auto" }}>OUT</Link>
+          <Button onClick={logout}>
+            <Link
+              to="/login"
+              style={{ color: "black", textDecoration: "auto" }}
+            >
+              OUT
+            </Link>
           </Button>
         </Right>
       </Wrapper>
+      <ContainerTable> {<Table data={data} />}</ContainerTable>
     </Container>
   );
 };
