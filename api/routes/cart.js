@@ -1,4 +1,5 @@
 const cartCtrl = require("../controller/cartCtrl");
+//phân quyền
 const {
     verifyToken,
     verifyTokenAndAuthorization,
