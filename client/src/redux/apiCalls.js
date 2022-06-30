@@ -23,6 +23,7 @@ export const register = async (dispatch, user) => {
     dispatch(loginFailure());
   }
 }
+//LOGOUT...
 export const logoutUser = async (dispatch) =>{
   localStorage.removeItem('persist:root')
   dispatch(logout())
