@@ -63,6 +63,7 @@ const Register = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     register(dispatch, { username, email, password });
+    alert("Đăng ký thành công");
   };
 
   return (
@@ -95,7 +96,6 @@ const Register = () => {
           />
 
           <Input type="password" placeholder="confirm password" />
-
           <Agreement>
             By clicking Sign Up, you agree to our Terms, Data Policy and Cookie
             Policy. You may receive SMS notifications from us and can opt out at

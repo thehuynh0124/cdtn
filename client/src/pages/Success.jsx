@@ -40,7 +40,7 @@ const Success = () => {
       }}
     >
       {orderId
-        ? `Đặt hàng thành công, mã đặt hàng của bạn là:  ${orderId}`
+        ? `Đặt hàng thành công, mã đặt hàng của bạn là: ${orderId}`
         : `Đặt hàng không thành công, mời đăng nhập và đặt hàng lại.`}
       <button style={{ padding: 10, marginTop: 20 }}>
         {" "}

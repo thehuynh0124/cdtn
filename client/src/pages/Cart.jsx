@@ -1,4 +1,4 @@
-// import { Add, Remove } from "@material-ui/icons";
+import { Delete } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Bang from "../components/Bang";
@@ -165,27 +165,22 @@ const Button = styled.button`
   color: white;
   font-weight: 600;
 `;
-
+const iconDelete = styled.div`
+    margin: 10px;
+`;
 const Cart = () => {
-  // const handleQuantity = (type) => {
-  //   if (type === "dec") {
-  //     quantity > 1 && setQuantity(quantity - 1);
-  //   } else {
-  //     setQuantity(quantity + 1);
-  //   }
-  // };
-
-  // trừ đi số lượng sản phẩm
-  // const [amount, setAmount] = useState("")
+  //trừ đi số lượng sản phẩm
+  // const [numberofproducts, setNumberofproducts] = useState("")
   // const dispatch = useDispatch()
   // const handleClick = async (e) =>{
   //   e.preventDefault();
-  //   product(dispatch, {amount})
+  //   product(dispatch, {numberofproducts})
   // }
 
-  const cart = useSelector((state) => state.cart);
+  //const curu = useSelector((state) => state);
+  const cart = useSelector((state) => state.cart/*.products*/);
+  const [cartedit,setcartedit]= useState(cart)
   const [stripeToken, setStripeToken] = useState(null);
-  // const [quantity, setQuantity] = useState(1);
   let navigate = useNavigate();
 
   const onToken = (token) => {
@@ -207,6 +202,17 @@ const Cart = () => {
     stripeToken && makeRequest();
   }, [stripeToken, cart.total, navigate]);
 
+  // xóa sản phẩm đi
+
+  // const clickEvent = (product) =>{
+  //   console.log(product);
+  //  deletePro(product)
+  // }
+  // const deletePro = (p)=>{
+  //   const curr = cartedit.filter((fn) => fn._id !== p._id);
+  //   setcartedit(curr);
+  //   console.log(curr);
+  // }
   return (
     <Container>
       <Navbar />
@@ -227,7 +233,7 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {cart.products.map((product) => (
+            {cartedit.products.map((product) => (
               <Product>
                 <ProductDetail>
                   <Image src={product.img} />
@@ -253,6 +259,7 @@ const Cart = () => {
                 <PriceDetail>
                   <ProductAmountContainer>
                     <ProductAmount>{product.quantity}</ProductAmount>
+                    <Delete /*onClick={()=>clickEvent(product)}*//>
                   </ProductAmountContainer>
                   <ProductPrice>
                     {product.price * product.quantity} VNĐ
@@ -289,7 +296,7 @@ const Cart = () => {
               token={onToken}
               stripeKey={KEY}
             >
-              <Button /*onClick={handleClick}*/>Thanh toán luôn</Button>
+              <Button /*onClick={handleClick} onClick={clickEvent}*/>Thanh toán luôn</Button>
             </StripeCheckout>
           </Summary>
         </Bottom>
