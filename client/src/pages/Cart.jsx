@@ -1,4 +1,5 @@
-import { Delete } from "@material-ui/icons";
+import { Clear } from "@material-ui/icons";
+import { DeleteForever } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Bang from "../components/Bang";
@@ -10,6 +11,8 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { remove, removeProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
 // import { product } from "../redux/apiCalls";
 
 const KEY =
@@ -55,6 +58,10 @@ const TopText = styled.span`
   margin: 0px 10px;
   border-radius: 6px;
 `;
+const deleteCart = styled.span`
+text-decoration: underline;
+cursor: pointer;
+`
 
 const Bottom = styled.div`
   display: flex;
@@ -166,7 +173,7 @@ const Button = styled.button`
   font-weight: 600;
 `;
 const iconDelete = styled.div`
-    margin: 10px;
+  margin: 10px;
 `;
 const Cart = () => {
   //trừ đi số lượng sản phẩm
@@ -178,10 +185,12 @@ const Cart = () => {
   // }
 
   //const curu = useSelector((state) => state);
-  const cart = useSelector((state) => state.cart/*.products*/);
-  const [cartedit,setcartedit]= useState(cart)
+  const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user);
+  const [cartedit, setcartedit] = useState(cart);
   const [stripeToken, setStripeToken] = useState(null);
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onToken = (token) => {
     setStripeToken(token);
@@ -203,16 +212,23 @@ const Cart = () => {
   }, [stripeToken, cart.total, navigate]);
 
   // xóa sản phẩm đi
-
-  // const clickEvent = (product) =>{
-  //   console.log(product);
-  //  deletePro(product)
-  // }
-  // const deletePro = (p)=>{
-  //   const curr = cartedit.filter((fn) => fn._id !== p._id);
-  //   setcartedit(curr);
-  //   console.log(curr);
-  // }
+  const clickEvent = (product) => {
+    dispatch(removeProduct(product));
+  };
+  const deleteAll = () => {
+    dispatch(remove(cart));
+    navigate("/")
+  };
+  
+  const clickPay = () => {
+    if (user.currentUser == null) {
+      alert("Mời đăng nhập tài khoản trước khi thanh");
+      //navigate("/login")
+    }
+    if (cart.products == null) {
+      alert("Giỏ hàng không có hàng");
+    }
+  };
   return (
     <Container>
       <Navbar />
@@ -229,6 +245,7 @@ const Cart = () => {
             <TopText>Giỏ hàng(2)</TopText>
             <TopText>Sản phẩm mới(3)</TopText>
           </TopTexts>
+          <DeleteForever onClick={() => deleteAll(cart)} />
           <TopButton type="filled">THANH TOÁN</TopButton>
         </Top>
         <Bottom>
@@ -257,9 +274,9 @@ const Cart = () => {
                   </Details>
                 </ProductDetail>
                 <PriceDetail>
+                <Clear style={{margin: "0px 0px 36px 160px", textDecoration: "auto" }} onClick={() => clickEvent(product)} />
                   <ProductAmountContainer>
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Delete /*onClick={()=>clickEvent(product)}*//>
                   </ProductAmountContainer>
                   <ProductPrice>
                     {product.price * product.quantity} VNĐ
@@ -296,7 +313,13 @@ const Cart = () => {
               token={onToken}
               stripeKey={KEY}
             >
-              <Button /*onClick={handleClick} onClick={clickEvent}*/>Thanh toán luôn</Button>
+              <Button style={{borderRadius: "6px"}}
+                onClick={
+                  clickPay
+                } /*onClick={handleClick} onClick={clickEvent}*/
+              >
+                Thanh toán luôn
+              </Button>
             </StripeCheckout>
           </Summary>
         </Bottom>

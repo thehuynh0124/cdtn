@@ -4,7 +4,6 @@ import { createContext } from "react";
 
 export const AuthContext = createContext()
 
-
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {

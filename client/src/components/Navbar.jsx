@@ -13,6 +13,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../redux/apiCalls";
 import Table from "./TableSearch";
+import { useNavigate } from "react-router-dom";
+
 
 const Container = styled.div`
   height: 50px;
@@ -53,6 +55,8 @@ const SearchContainer = styled.div`
   margin-left: 25px;
   padding: 0px;
   font-size: 12px;
+  border-radius: 6px;
+  
 `;
 
 const Input = styled.input`
@@ -93,9 +97,12 @@ const Item = styled.div`
 `;
 const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
-  console.log(quantity);
+  let navigate = useNavigate();
   //logout
-  const logout = () => logoutUser();
+  const logout = () => {
+    logoutUser();
+    navigate("/products/apple")
+  };
 
   // search // vẫn hiện khi không tìm kiếm
   const [query, setQuery] = useState("search");
@@ -116,7 +123,7 @@ const Navbar = () => {
           <Language>VN</Language>
           <SearchContainer>
             <Input
-              style={{ fontSize: 18 }}
+              style={{borderRadius: "6px", fontSize: 18 }}
               className="search"
               placeholder="Search..."
               onChange={(e) => setQuery(e.target.value.toLowerCase())}

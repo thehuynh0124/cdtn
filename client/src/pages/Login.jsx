@@ -120,7 +120,6 @@ const Login = () => {
     try{
       e.preventDefault();
       login(dispatch, { username, password });
-      alert("Đăng nhập thành công");
     }catch{};
   };
   return (
